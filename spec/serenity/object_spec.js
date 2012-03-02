@@ -66,4 +66,41 @@ describe ("Serenity.Object", function () {
       });
     });
   });
+  
+  describe (".extend", function () {
+    it ("copies over all the properties from one object to the receiver", function () {
+      var obj1 = Serenity.Object.clone(function () { this.foo = "a foo"; })
+        , obj2 = {bar: "a bar", baz: "a baz" };
+      obj1.extend(obj2);
+      expect (obj1.foo). toEqual ("a foo");
+      expect (obj1.bar). toEqual ("a bar");
+      expect (obj1.baz). toEqual ("a baz");
+    });
+    
+    it ("invokes extended on the extended object", function () {
+      var obj1 = Serenity.Object.clone(function () { this.type = "obj1"; })
+        , msg  = ""
+        , obj2 = { extended: function (obj) { msg += obj.type + " completes me!"; } };
+      obj1.extend(obj2);
+      
+      expect (msg). toEqual ("obj1 completes me!");
+    });
+    
+    it ("skips parent", function () {
+      var obj1 = Serenity.Object.clone()
+        , obj2 = obj1.clone();
+      obj2.extend(obj1);
+      
+      expect (obj2.parent). toEqual (obj1);
+    });
+    
+    it ("skips properties that begin with underscore", function () {
+      var init = function () { return "initing"; }
+        , obj1 = Serenity.Object.clone(init)
+        , obj2 = Serenity.Object.clone();
+      obj1.extend(obj2);
+      
+      expect (obj1._init). toNotEqual (obj2._init);
+    });
+  });
 });
