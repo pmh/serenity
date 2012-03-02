@@ -103,4 +103,27 @@ describe ("Serenity.Object", function () {
       expect (obj1._init). toNotEqual (obj2._init);
     });
   });
+  
+  describe (".forEach", function () {
+    it ("skipps 'reserved words'", function () {
+      var keys = [], obj1 = Serenity.Object.clone(function () {
+        this.foo = "foo";
+        this.bar = "bar";
+      });
+      obj1.forEach(function (key) { keys.push(key); });
+      
+      expect (keys). toEqual (["foo", "bar"]);
+    });
+    
+    it ("yields both key and value", function () {
+      var keys = [], obj1 = Serenity.Object.clone(function () {
+        this.foo = "a foo";
+        this.bar = "a bar";
+      });
+      obj1.forEach(function (key, value) { keys.push([key, value]); });
+      
+      expect (keys). toEqual ([["foo", "a foo"], ["bar", "a bar"]]);
+      
+    });
+  });
 });
