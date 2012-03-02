@@ -9,20 +9,20 @@ describe ("Serenity", function () {
       expect (App.Foo). toEqual ("Foo");
     });
     
-    describe ("._resolve_types", function () {
-      it ("can resolve simple types", function () {
+    describe (".run", function () {
+      it ("resolves top level types", function () {
         var App = Serenity.app();
         App.Foo = Serenity.Object.clone(); App.Bar = Serenity.Object.clone(), App.Bar.Baz = Serenity.Object.clone();
-        App._resolve_types();
+        App.run();
         
         expect ( App.Foo.type     ). toEqual ("Foo");
         expect ( App.Bar.type     ). toEqual ("Bar");
       });
       
-      it ("can resolve nested types", function () {
+      it ("resolves nested types", function () {
         var App = Serenity.app();
         App.Foo = Serenity.Object.clone(); App.Foo.Bar = Serenity.Object.clone(), App.Foo.Bar.Baz = Serenity.Object.clone();
-        App._resolve_types();
+        App.run();
         
         expect ( App.Foo.Bar.type     ). toEqual ("Bar");
         expect ( App.Foo.Bar.Baz.type ). toEqual ("Baz");
