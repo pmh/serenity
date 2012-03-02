@@ -126,4 +126,15 @@ describe ("Serenity.Object", function () {
       
     });
   });
+  
+  describe (".toString", function () {
+    it ("contains type and slots information", function () {
+      var Obj = Serenity.Object.clone(function () {
+        this.type = "Obj";
+        this.foo  = "a foo"; 
+        this.bar  = function () {};
+      });
+      expect (Obj.toString()). toEqual ('<Obj @foo="a foo" @bar="method">');
+    });
+  });
 });
