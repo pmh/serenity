@@ -1,5 +1,9 @@
 
 describe ("Serenity.Object", function () {
+  it ("has a type field", function () {
+    expect (Serenity.Object.type). toEqual("Serenity.Object");
+  });
+  
   describe ('.clone', function () {
     it ("returns a new object", function () {
       var obj = Serenity.Object.clone();
