@@ -131,6 +131,33 @@ describe ("Serenity.Object", function () {
     });
   });
   
+  describe (".set", function () {
+    it ("can be called with a name and a value", function () {
+      var obj = Serenity.Object.clone();
+      obj.set('foo', 'bar');
+      
+      expect (obj.foo). toEqual ("bar");
+    });
+    
+    it ("can be called with an object of name/value pairs", function () {
+      var obj = Serenity.Object.clone();
+      obj.set({foo: 'bar', baz: 'quux'});
+      
+      expect (obj.foo). toEqual ("bar");
+      expect (obj.baz). toEqual ("quux");
+    });
+    
+    it ("delegates to ko.observable", function () {
+      spyOn(ko, 'observable').andCallThrough();
+      
+      var obj = Serenity.Object.clone();
+      obj.set('foo', 'bar');
+      obj.set({foo: 'bar', baz: 'quux'});
+      
+      expect (ko.observable.callCount). toEqual (3);
+    });
+  });
+  
   describe (".toString", function () {
     it ("contains type and slots information", function () {
       var Obj = Serenity.Object.clone(function () {
