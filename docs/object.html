@@ -1,0 +1,112 @@
+<!DOCTYPE html>  <html> <head>   <title>object.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="serenity.html">                 serenity.js               </a>                                           <a class="source" href="application.html">                 application.js               </a>                                           <a class="source" href="controller.html">                 controller.js               </a>                                           <a class="source" href="object.html">                 object.js               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               object.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="kd">var</span> <span class="nb">Object</span> <span class="o">=</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p><code>_reserved</code> determines wether a certain word is reserved or not.
+Reserved words are ignored when iterating over an object.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">_reserved</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">word</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">word</span> <span class="o">===</span> <span class="s2">&quot;parent&quot;</span> <span class="o">||</span> <span class="nx">word</span> <span class="o">===</span> <span class="s2">&quot;type&quot;</span> <span class="o">||</span> <span class="nx">word</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">===</span> <span class="s2">&quot;_&quot;</span><span class="p">;</span>
+  <span class="p">},</span>
+  </pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>Every Serenity.Object has a type field to aid in debbugging and also to enforce conventions.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;Serenity.Object&quot;</span><span class="p">,</span>
+  </pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p><code>clone</code> is the corner stone of the Serenity object model. You could think of it as an 
+object factory somewhat akin to Object.create but more powerful.
+When called it produces a new object who's prototype is the receiver of the clone message, 
+it then invokes the passed in function in the context of this newly created object.
+It also adds a parent property to each object which points to it's prototype.</p>
+
+<p>One thing to note about Serenity's object model is that your always working with objects
+and there's no concept of classes so there's no distinction between class level (i.e., static proprties)
+and instance level properties.</p>
+
+<pre><code>// Creates a new object whose prototype is Object and
+// assigns it to 'MyObj'
+var MyObj = Object.clone(function () { this.stuff = [] });
+
+// Creates a new object whose prototype is MyObj and 
+// assigns it to 'myObj'
+var myObj = MyObj.clone();
+
+myObj.stuff.push(1);
+myObj.stuff;           //=&gt; [1]
+myObj.parent.stuff;    //=&gt; []
+</code></pre>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">clone</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">blk</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">proto</span> <span class="o">=</span> <span class="k">this</span><span class="p">,</span> <span class="nx">F</span><span class="p">;</span>
+    
+    <span class="nx">F</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">parent</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">parent</span>          <span class="o">=</span> <span class="nx">parent</span><span class="p">;</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">_init</span>           <span class="o">=</span> <span class="nx">blk</span> <span class="o">||</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{};</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">_before_filters</span> <span class="o">=</span> <span class="p">[];</span>
+      
+      <span class="k">if</span> <span class="p">(</span><span class="nx">proto</span><span class="p">.</span><span class="nx">_init</span><span class="p">)</span> <span class="nx">proto</span><span class="p">.</span><span class="nx">_init</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">_init</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+       
+      <span class="k">if</span> <span class="p">(</span><span class="nx">parent</span><span class="p">.</span><span class="nx">cloned</span><span class="p">)</span> <span class="nx">parent</span><span class="p">.</span><span class="nx">cloned</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+    <span class="p">};</span>
+    
+    <span class="nx">F</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">proto</span><span class="p">;</span>
+    <span class="nx">F</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">F</span><span class="p">;</span>
+    
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">F</span><span class="p">(</span><span class="nx">proto</span><span class="p">);</span>
+  <span class="p">},</span>
+  </pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p><code>extend</code> copies all properties of the passed in object and installs them on it's receiver and 
+then calls the extended hook method on that object (if one is defined) passing along the receiver
+as an argument.</p>
+
+<pre><code>var Foo = {
+  extended: function (obj) {
+    console.log("I will be called if someone extends me!")
+  },
+  foo: "bar"
+};
+
+var Bar = Serenity.Object.clone();
+
+Bar.foo           //=&gt; undefined
+
+Bar.extend(Foo);  //=&gt; "I will be called if someone extends me!"
+
+Bar.foo           //=&gt; "bar"
+</code></pre>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">extend</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">slot</span> <span class="k">in</span> <span class="nx">obj</span><span class="p">)</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">slot</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_reserved</span><span class="p">(</span><span class="nx">slot</span><span class="p">))</span> <span class="k">this</span><span class="p">[</span><span class="nx">slot</span><span class="p">]</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">slot</span><span class="p">];</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">extended</span><span class="p">)</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">extended</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+  <span class="p">},</span>
+  </pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p><code>foreach</code> iterates over an object invoking the passed in function for it's side effects for every property.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">forEach</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">fn</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">slot</span> <span class="k">in</span> <span class="k">this</span><span class="p">)</span>
+      <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">slot</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_reserved</span><span class="p">(</span><span class="nx">slot</span><span class="p">))</span> <span class="nx">fn</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">slot</span><span class="p">,</span> <span class="k">this</span><span class="p">[</span><span class="nx">slot</span><span class="p">]);</span>
+  <span class="p">},</span>
+  </pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p><code>set</code> let's you set properties on your object's and you should prefer using it rather than setting properies driectly.
+The reason for this is that when you use <code>set</code> it will make your propery obsevable allowing listeners (like your views)
+automatically react to any changes to it.
+You can call <code>set</code> in two ways, you either call it with two arguments where the first is the name of the property and 
+the other one is the value to set it to, or you call it with an object of key/value pairs.</p>
+
+<pre><code>var myObj = Serenity.Object.clone();
+
+myObj.set("foo", 123);
+myObj.set({bar: 321, baz: 456});
+</code></pre>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">set</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">name</span><span class="p">.</span><span class="nx">substring</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="nx">ko</span><span class="p">.</span><span class="nx">observable</span><span class="p">(</span><span class="nx">val</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+      <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">k</span> <span class="k">in</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span> <span class="o">=</span> <span class="nx">ko</span><span class="p">.</span><span class="nx">observable</span><span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">k</span><span class="p">]);</span>
+      <span class="p">};</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  </pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p><code>toString</code> returns a textual representation of your objects.
+It tries it's best to provide as detailed information as possible, including the objects type and attributes.</p>
+
+<pre><code>Serenity.Object.toString()
+      //=&gt; &lt;Serenity.Object @extend="method" @set="method" ...&gt;
+</code></pre>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">toString</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">str</span> <span class="o">=</span> <span class="s2">&quot;&lt;&quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">type</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">slot</span><span class="p">)</span> <span class="p">{</span> 
+      <span class="nx">str</span> <span class="o">+=</span> <span class="s1">&#39;@&#39;</span> <span class="o">+</span> <span class="nx">slot</span> <span class="o">+</span> <span class="s1">&#39;=&#39;</span><span class="p">;</span>
+      <span class="nx">str</span> <span class="o">+=</span> <span class="k">typeof</span> <span class="k">this</span><span class="p">[</span><span class="nx">slot</span><span class="p">]</span> <span class="o">===</span> <span class="s2">&quot;function&quot;</span> <span class="o">?</span> <span class="s1">&#39;&quot;method&quot;&#39;</span> <span class="o">:</span> <span class="s1">&#39;&quot;&#39;</span> <span class="o">+</span> <span class="k">this</span><span class="p">[</span><span class="nx">slot</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">;</span>
+      <span class="nx">str</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span><span class="p">;</span>
+    <span class="p">});</span>
+    <span class="k">return</span> <span class="nx">str</span><span class="p">.</span><span class="nx">trim</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;&gt;&quot;</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">;</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
