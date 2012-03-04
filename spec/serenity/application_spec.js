@@ -27,6 +27,38 @@ describe ("Serenity", function () {
         expect ( App.Foo.Bar.type     ). toEqual ("Bar");
         expect ( App.Foo.Bar.Baz.type ). toEqual ("Baz");
       });
+      
+      it ("sets the model property on controller objects", function () {
+        var App = Serenity.app();
+        App.Tasks = Serenity.ArrayController.clone();
+        App.run();
+        
+        expect (App.Tasks.model). toEqual ("Task");
+      });
+      
+      it ("wont set the model property if it's already set", function () {
+        var App = Serenity.app();
+        App.Tasks = Serenity.ArrayController.clone(function () { this.model = "MyTask"; });
+        App.run();
+        
+        expect (App.Tasks.model). toEqual ("MyTask");
+      });
+      
+      it ("sets the view property on controller objects", function () {
+        var App = Serenity.app();
+        App.Tasks = Serenity.ArrayController.clone();
+        App.run();
+        
+        expect (App.Tasks.view). toEqual ("TaskView");
+      });
+      
+      it ("wont set the view property if it's already set", function () {
+        var App = Serenity.app();
+        App.Tasks = Serenity.ArrayController.clone(function () { this.view = "MyTaskView"; });
+        App.run();
+        
+        expect (App.Tasks.view). toEqual ("MyTaskView");
+      });
     });
   });
 });
