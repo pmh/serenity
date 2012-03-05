@@ -59,6 +59,14 @@ describe ("Serenity", function () {
         
         expect (App.Tasks.view). toEqual ("MyTaskView");
       });
+      
+      it ("sets a collection property on array controller objects", function () {
+        var App = Serenity.app();
+        App.Tasks = Serenity.ArrayController.clone();
+        App.run();
+        
+        expect (App.Tasks.tasks). toEqual ([]);
+      });
     });
   });
 });
