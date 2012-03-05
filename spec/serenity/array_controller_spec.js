@@ -12,5 +12,31 @@ describe ("Serenity", function () {
       
       expect (App.Tasks.tasks). toEqual([]);;
     });
+    
+    describe (".create", function () {
+      it ("delegates to the model's create method", function () {
+        var App = Serenity.app();
+        App.Task  = { create: function () {} };
+        App.Tasks = Serenity.ArrayController.clone();
+        App.run();
+        spyOn(App.Task, 'create');
+        
+        App.Tasks.create("foo");
+        
+        expect (App.Task.create). toHaveBeenCalledWith("foo");
+      });
+      
+      it ("adds the model object to it's collection", function () {
+        var App = Serenity.app();
+        App.Task  = { create: function () { return this; } };
+        App.Tasks = Serenity.ArrayController.clone();
+        App.run();
+        
+        App.Tasks.create();
+        
+        expect (App.Tasks.tasks). toEqual([App.Task]);
+      });
+      
+    });
   });
 });

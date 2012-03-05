@@ -21,7 +21,7 @@ describe ("Serenity", function () {
       it ("sets the created model object as a property named like the model", function () {
         var App = Serenity.app();
         App.Task  = { create: function () { return this; } };
-        App.Tasks = Serenity.ArrayController.clone();
+        App.Tasks = Serenity.Controller.clone();
         App.run();
         
         var model = App.Tasks.create();
@@ -32,7 +32,7 @@ describe ("Serenity", function () {
       it ("returns the model object", function () {
         var App = Serenity.app();
         App.Task  = { create: function () { return this; } };
-        App.Tasks = Serenity.ArrayController.clone();
+        App.Tasks = Serenity.Controller.clone();
         App.run();
         
         var model = App.Tasks.create();
