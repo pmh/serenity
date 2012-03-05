@@ -40,5 +40,24 @@ describe ("Serenity", function () {
         expect (model). toEqual(App.Task);
       });
     });
+    
+    describe (".render", function () {
+      it ("retrieves the index template, renders it onto this.el and applies bindings", function () {
+        var App = Serenity.app();
+        App.Templates = { 'tasks/index': "tasks/index template" };
+        App.Tasks     = Serenity.ArrayController.clone();
+        App.TaskView  = Serenity.View.clone(function () { this.el = "foo"; });
+        App.run();
+        
+        spyOn( global   , '$'             ).andCallThrough();
+        spyOn( $Context , 'html'          ).andCallThrough();
+        spyOn( ko       , 'applyBindings' ).andCallThrough();
+        
+        App.Tasks.render();
+        expect ( global.$             ).toHaveBeenCalledWith('foo');
+        expect ( global.$Context.html ).toHaveBeenCalledWith('tasks/index template');
+        expect ( ko.applyBindings     ).toHaveBeenCalled();
+      });
+    });
   });
 });
