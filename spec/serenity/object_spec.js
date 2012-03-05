@@ -133,18 +133,20 @@ describe ("Serenity.Object", function () {
   
   describe (".set", function () {
     it ("can be called with a name and a value", function () {
-      var obj = Serenity.Object.clone();
-      obj.set('foo', 'bar');
+      var obj = Serenity.Object.clone()
+        , res = obj.set('foo', 'bar');
       
       expect (obj.foo). toEqual ("bar");
+      expect (res).     toEqual ("bar");
     });
     
     it ("can be called with an object of name/value pairs", function () {
-      var obj = Serenity.Object.clone();
-      obj.set({foo: 'bar', baz: 'quux'});
+      var obj = Serenity.Object.clone()
+        , res = obj.set({foo: 'bar', baz: 'quux'});
       
       expect (obj.foo). toEqual ("bar");
       expect (obj.baz). toEqual ("quux");
+      expect (res).     toEqual (obj);
     });
     
     it ("delegates to ko.observable", function () {
