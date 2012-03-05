@@ -36,6 +36,14 @@ describe ("Serenity", function () {
         expect (App.Tasks.model). toEqual ("Task");
       });
       
+      it ("strips away Controller part from name if there is one", function () {
+        var App = Serenity.app();
+        App.TaskController = Serenity.Controller.clone();
+        App.run();
+        
+        expect (App.TaskController.model). toEqual ("Task");
+      });
+      
       it ("wont set the model property if it's already set", function () {
         var App = Serenity.app();
         App.Tasks = Serenity.ArrayController.clone(function () { this.model = "MyTask"; });
