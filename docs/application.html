@@ -26,12 +26,17 @@
     <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">type</span> <span class="o">&amp;&amp;</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/ArrayController$/</span><span class="p">))</span>
       <span class="nx">obj</span><span class="p">[</span><span class="nx">name</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">()]</span> <span class="o">=</span> <span class="nx">ko</span><span class="p">.</span><span class="nx">observableArray</span><span class="p">([]);</span>
   <span class="p">};</span>
+  
+  <span class="k">this</span><span class="p">.</span><span class="nx">_render</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">_</span><span class="p">,</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">parent</span> <span class="o">&amp;&amp;</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">parent</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/Controller$/</span><span class="p">))</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">render</span><span class="p">();</span>
+  <span class="p">};</span>
   </pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p><code>run</code> recursively walks the Application object and for each step it
 sets the model, view and collection attributes on controller objects and resolves
 the type of each 'constant' property.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">this</span><span class="p">.</span><span class="nx">run</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">_traverse</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
       <span class="nx">Application</span><span class="p">.</span><span class="nx">_configure_controller</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">obj</span><span class="p">);</span>
       <span class="nx">Application</span><span class="p">.</span><span class="nx">_resolve_type</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">obj</span><span class="p">);</span>
+      <span class="nx">Application</span><span class="p">.</span><span class="nx">_render</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">obj</span><span class="p">);</span>
     <span class="p">});</span>
   <span class="p">};</span>
 <span class="p">});</span>

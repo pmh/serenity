@@ -8,7 +8,10 @@
   <span class="p">};</span>
   
   <span class="k">this</span><span class="p">.</span><span class="nx">_retrieve_template</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">Serenity</span><span class="p">.</span><span class="nx">Application</span><span class="p">.</span><span class="nx">Templates</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nx">name</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">Serenity</span><span class="p">.</span><span class="nx">Application</span><span class="p">.</span><span class="nx">Templates</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nx">Serenity</span><span class="p">.</span><span class="nx">Application</span><span class="p">.</span><span class="nx">Templates</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="s2">&quot;Controller&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">).</span><span class="nx">toLowerCase</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nx">name</span><span class="p">];</span>
+    
+    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
   <span class="p">};</span>
   </pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p><code>create</code> locates it's model object and delegates to it's 
 create method, passing along any arguments.
