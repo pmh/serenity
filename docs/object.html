@@ -65,7 +65,7 @@ Bar.foo           //=&gt; "bar"
     <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">slot</span> <span class="k">in</span> <span class="nx">obj</span><span class="p">)</span>
       <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">slot</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_reserved</span><span class="p">(</span><span class="nx">slot</span><span class="p">))</span> <span class="k">this</span><span class="p">[</span><span class="nx">slot</span><span class="p">]</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">slot</span><span class="p">];</span>
     
-    <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">extended</span><span class="p">)</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">extended</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span> <span class="o">&amp;&amp;</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">extended</span><span class="p">)</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">extended</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
   <span class="p">},</span>
   </pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p><code>foreach</code> iterates over an object invoking the passed in function for it's side effects for every property.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">forEach</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">fn</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">slot</span> <span class="k">in</span> <span class="k">this</span><span class="p">)</span>
@@ -92,7 +92,14 @@ myObj.set({bar: 321, baz: 456});
       <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
     <span class="p">}</span>
   <span class="p">},</span>
-  </pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p><code>toString</code> returns a textual representation of your objects.
+  </pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p><code>computed</code> sets up a computed property. A computed property is a function that 
+depends on other properties and will automatically update whenever it's 
+dependencies do.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">computed</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">method</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">method</span><span class="p">.</span><span class="nx">computed</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="nx">method</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="nx">method</span><span class="p">;</span>
+  <span class="p">},</span>
+  </pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p><code>toString</code> returns a textual representation of your objects.
 It tries it's best to provide as detailed information as possible, including the objects type and attributes.</p>
 
 <pre><code>Serenity.Object.toString()

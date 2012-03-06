@@ -160,6 +160,30 @@ describe ("Serenity.Object", function () {
     });
   });
   
+  describe (".computed", function () {
+    it ("maps the property name to the function", function () {
+      var obj = Serenity.Object.clone();
+      obj.computed("foo", function () { return "computed foo"; });
+      
+      expect (obj.foo()). toEqual ("computed foo");
+    });
+    
+    it ("sets a computed property on the method", function () {
+      var obj = Serenity.Object.clone();
+      obj.computed("foo", function () {});
+      
+      expect (obj.foo.computed). toBeTruthy ();
+    });
+    
+    it ("calls bind on the method", function () {
+      var obj = Serenity.Object.clone(), method = function () {};
+      spyOn(method, "bind");
+      obj.computed("foo", method);
+      
+      expect (method.bind). toHaveBeenCalledWith (obj);
+    });
+  });
+  
   describe (".toString", function () {
     it ("contains type and slots information", function () {
       var Obj = Serenity.Object.clone(function () {
