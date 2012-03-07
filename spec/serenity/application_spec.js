@@ -75,6 +75,17 @@ describe ("Serenity", function () {
         
         expect (App.Tasks.tasks). toEqual ([]);
       });
+      
+      it ("wraps computed methods with ko.computed", function () {
+        var App = Serenity.app();
+        App.TaskController = Serenity.Controller.clone(function () {
+          this.computed('foo', function () {});
+        });
+        spyOn(ko, "computed");
+        App.run();
+        
+        expect (ko.computed). toHaveBeenCalledWith (App.TaskController.foo);
+      });
     });
   });
 });
