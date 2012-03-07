@@ -86,6 +86,22 @@ describe ("Serenity", function () {
         
         expect (ko.computed). toHaveBeenCalledWith (App.TaskController.foo);
       });
+      
+      it ("sets the el property on view objects", function () {
+        var App = Serenity.app();
+        App.TaskView = Serenity.View.clone();
+        App.run();
+        
+        expect (App.TaskView.el). toEqual ("#tasks");
+      });
+      
+      it ("wont set the el property if it's already set", function () {
+        var App = Serenity.app();
+        App.TaskView = Serenity.View.clone(function () { this.el = "#mytasks"; });
+        App.run();
+        
+        expect (App.TaskView.el). toEqual ("#mytasks");
+      });
     });
   });
 });
