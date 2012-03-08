@@ -47,6 +47,8 @@ myObj.parent.stuff;    //=&gt; []
 then calls the extended hook method on that object (if one is defined) passing along the receiver
 as an argument.</p>
 
+<p>It can optionally take a context in wich case it will bind any method objects to that context.</p>
+
 <pre><code>var Foo = {
   extended: function (obj) {
     console.log("I will be called if someone extends me!")
@@ -61,9 +63,10 @@ Bar.foo           //=&gt; undefined
 Bar.extend(Foo);  //=&gt; "I will be called if someone extends me!"
 
 Bar.foo           //=&gt; "bar"
-</code></pre>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">extend</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+</code></pre>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">extend</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">context</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">slot</span> <span class="k">in</span> <span class="nx">obj</span><span class="p">)</span>
-      <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">slot</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_reserved</span><span class="p">(</span><span class="nx">slot</span><span class="p">))</span> <span class="k">this</span><span class="p">[</span><span class="nx">slot</span><span class="p">]</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">slot</span><span class="p">];</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">slot</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_reserved</span><span class="p">(</span><span class="nx">slot</span><span class="p">))</span>
+        <span class="k">this</span><span class="p">[</span><span class="nx">slot</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nx">context</span> <span class="o">&amp;&amp;</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">slot</span><span class="p">]</span> <span class="o">===</span> <span class="s2">&quot;function&quot;</span><span class="p">)</span> <span class="o">?</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">slot</span><span class="p">].</span><span class="nx">bind</span><span class="p">(</span><span class="nx">context</span><span class="p">)</span> <span class="o">:</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">slot</span><span class="p">];</span>
     
     <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span> <span class="o">&amp;&amp;</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">extended</span><span class="p">)</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">extended</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
   <span class="p">},</span>
@@ -93,7 +96,7 @@ myObj.set({bar: 321, baz: 456});
     <span class="p">}</span>
   <span class="p">},</span>
   </pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p><code>method</code> creates a bound method on your object.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">method</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">method</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="nx">method</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="nx">method</span><span class="p">;</span>
   <span class="p">},</span>
   </pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p><code>computed</code> sets up a computed property. A computed property is a function that 
 depends on other properties and will automatically update whenever it's 

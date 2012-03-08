@@ -106,6 +106,16 @@ describe ("Serenity.Object", function () {
       
       expect (obj1._init). toNotEqual (obj2._init);
     });
+    
+    it ("accepts an optional context", function () {
+      var obj1 = Serenity.Object.clone(function () { this.foo = "a foo"; })
+        , obj2 = {bar: "a bar", baz: function () { "a baz"; } }
+        , obj3 = {};
+      spyOn(obj2.baz, "bind");
+      obj1.extend(obj2, obj3);
+      
+      expect (obj2.baz.bind). toHaveBeenCalledWith (obj3);
+    });
   });
   
   describe (".forEach", function () {
