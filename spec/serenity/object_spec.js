@@ -177,6 +177,14 @@ describe ("Serenity.Object", function () {
       
       expect (obj.foo()). toEqual ("computed foo");
     });
+    
+    it ("accepts a context arguments and will bind methods with that context", function () {
+      var obj = Serenity.Object.clone(), _method = function () { return "computed foo"; };
+      spyOn(_method, "bind");
+      obj.method("foo", _method, this);
+      
+      expect (_method.bind). toHaveBeenCalledWith (this);
+    });
   });
   
   describe (".computed", function () {
@@ -192,6 +200,14 @@ describe ("Serenity.Object", function () {
       obj.computed("foo", function () {});
       
       expect (obj.foo.computed). toBeTruthy ();
+    });
+    
+    it ("accepts a context arguments and will bind methods with that context", function () {
+      var obj = Serenity.Object.clone(), computed = function () { return "computed foo"; };
+      spyOn(computed, "bind").andCallThrough();
+      obj.computed("foo", computed, this);
+      
+      expect (computed.bind). toHaveBeenCalledWith (this);
     });
   });
   
