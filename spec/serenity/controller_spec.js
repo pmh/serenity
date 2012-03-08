@@ -49,11 +49,13 @@ describe ("Serenity", function () {
         App.TaskView  = Serenity.View.clone(function () { this.el = "foo"; });
         App.run();
         
+        spyOn( App.Tasks, 'extend'        ).andCallThrough();
         spyOn( global   , '$'             ).andCallThrough();
         spyOn( $Context , 'html'          ).andCallThrough();
         spyOn( ko       , 'applyBindings' ).andCallThrough();
         
         App.Tasks.render();
+        expect ( App.Tasks.extend     ).toHaveBeenCalledWith(App[App.Tasks.view], App.Tasks);
         expect ( global.$             ).toHaveBeenCalledWith('foo');
         expect ( global.$Context.html ).toHaveBeenCalledWith('tasks/index template');
         expect ( ko.applyBindings     ).toHaveBeenCalled();
