@@ -1,1 +1,1 @@
-module.exports = require('./lib/serenity')
+module.exports = require('./lib/serenity');
