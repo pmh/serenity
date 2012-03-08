@@ -167,14 +167,6 @@ describe ("Serenity.Object", function () {
       
       expect (obj.foo()). toEqual ("computed foo");
     });
-    
-    it ("calls bind on the method", function () {
-      var obj = Serenity.Object.clone(), method = function () {};
-      spyOn(method, "bind");
-      obj.method("foo", method);
-      
-      expect (method.bind). toHaveBeenCalledWith (obj);
-    });
   });
   
   describe (".computed", function () {
