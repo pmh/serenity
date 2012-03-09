@@ -50,13 +50,12 @@ describe ("Serenity", function () {
         App.run();
         
         spyOn( App.Tasks, 'extend'         ).andCallThrough();
-        spyOn( App.Tasks, 'renderTemplate' );
-        spyOn( ko       , 'applyBindings'  ).andCallThrough();
+        spyOn( App.Tasks, '_preloadTemplates' );
+        spyOn( App.Tasks, 'showTemplate' );
         
         App.Tasks.render();
         expect ( App.Tasks.extend         ).toHaveBeenCalledWith(App[App.Tasks.view], App.Tasks);
-        expect ( App.Tasks.renderTemplate ).toHaveBeenCalledWith('index');
-        expect ( ko.applyBindings         ).toHaveBeenCalled();
+        expect ( App.Tasks.showTemplate   ).toHaveBeenCalledWith('index');
       });
     });
   });
