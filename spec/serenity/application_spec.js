@@ -71,9 +71,11 @@ describe ("Serenity", function () {
       it ("sets a collection property on array controller objects", function () {
         var App = Serenity.app();
         App.Tasks = Serenity.ArrayController.clone();
+        spyOn(App.Tasks, 'extend');
         App.run();
         
-        expect (App.Tasks.tasks). toEqual ([]);
+        expect ( App.Tasks.tasks  ). toEqual ([]);
+        expect ( App.Tasks.extend ). toHaveBeenCalledWith (Serenity.Enumerable, App.Tasks.tasks);
       });
       
       it ("wraps computed methods with ko.computed", function () {
