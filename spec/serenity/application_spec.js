@@ -78,6 +78,19 @@ describe ("Serenity", function () {
         expect ( App.Tasks.extend ). toHaveBeenCalledWith (Serenity.Enumerable, App.Tasks.tasks);
       });
       
+      it ("sets a model property on array controller objects", function () {
+        var App = Serenity.app();
+        App.Task  = Serenity.Model.clone();
+        App.Tasks = Serenity.ArrayController.clone();
+        spyOn(App.Task,  'create').andReturn(App.Task);
+        spyOn(App.Tasks, 'extend');
+        App.run();
+        
+        expect ( App.Tasks.task   ). toEqual (App.Task);
+        expect ( App.Tasks.tasks  ). toEqual ([]);
+        expect ( App.Tasks.extend ). toHaveBeenCalledWith (Serenity.Enumerable, App.Tasks.tasks);
+      });
+      
       it ("wraps computed methods with ko.computed", function () {
         var App = Serenity.app();
         App.TaskController = Serenity.Controller.clone(function () {

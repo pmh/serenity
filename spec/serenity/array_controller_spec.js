@@ -37,6 +37,16 @@ describe ("Serenity", function () {
         expect (App.Tasks.tasks). toEqual([App.Task]);
       });
       
+      it ("resets it's model object", function () {
+        var App = Serenity.app();
+        App.Task  = { create: function () { return this; } };
+        App.Tasks = Serenity.ArrayController.clone();
+        App.run();
+        App.Tasks.create();
+        
+        expect (App.Tasks.task). toEqual(App.Task);
+        
+      });
     });
   });
 });

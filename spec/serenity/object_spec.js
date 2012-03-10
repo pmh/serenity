@@ -146,17 +146,17 @@ describe ("Serenity.Object", function () {
       var obj = Serenity.Object.clone()
         , res = obj.set('foo', 'bar');
       
-      expect (obj.foo). toEqual ("bar");
-      expect (res).     toEqual ("bar");
+      expect (obj.foo).      toEqual ("bar");
+      expect (res).          toEqual ("bar");
     });
     
     it ("can be called with an object of name/value pairs", function () {
       var obj = Serenity.Object.clone()
         , res = obj.set({foo: 'bar', baz: 'quux'});
       
-      expect (obj.foo). toEqual ("bar");
-      expect (obj.baz). toEqual ("quux");
-      expect (res).     toEqual (obj);
+      expect (obj.foo).      toEqual ("bar");
+      expect (obj.baz).      toEqual ("quux");
+      expect (res).          toEqual (obj);
     });
     
     it ("delegates to ko.observable", function () {
