@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Welcome to Serenity</title>
+    
+    <meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <!-- App icon for iPad (3rd gen) with retina display -->
+    <link rel="apple-touch-icon" sizes="144x144" href="./img/app-icon/apple-touch-icon-144x144.png">
+
+    <!-- App icon for iPhone with retina display -->
+    <link rel="apple-touch-icon" sizes="114x114" href="./img/app-icon/apple-touch-icon-114x114.png">
+
+    <!-- App icon for iPad (1st and 2nd gen) -->
+    <link rel="apple-touch-icon" sizes="72x72" href="./img/app-icon/apple-touch-icon-72x72.png">
+
+    <!-- App icon for iPhone (non-retina) and Android -->
+    <link rel="apple-touch-icon" href="./img/app-icon/apple-touch-icon.png">
+
+    <!-- Favicon for Android browser tabs/bookmarks -->
+    <link rel="icon" type="image/png" href="./img/app-icon/favicon.png">
+    
+
+    
+    <style>
+      #splash {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        z-index: 100000;
+        display: -webkit-box;
+        display: box;
+        -webkit-box-orient: vertical;
+        box-orient: vertical;
+        -webkit-box-align: center;
+        box-align: center;
+        -webkit-box-pack: center;
+        box-pack: center;
+      }
+      #splash.hidden {
+        display: none;
+      }
+      #splash h1 {
+        text-align: center;
+        color: black;
+        font-weight: normal;
+        text-shadow: rgba(255, 255, 255, 0.6) 1px 1px 0;
+      }
+      #splash ol {
+        width: 100%;
+        text-align: center;
+      }
+      .loader {
+        list-style: none;
+        margin: 0; padding: 0;
+      }
+      @-webkit-keyframes pulse {
+        0%   { -webkit-transform: scale(1); }
+        50%  { -webkit-transform: scale(1.4); }
+        100% { -webkit-transform: scale(1); }
+      }
+
+      .loader li {
+        display: inline-block;
+        width: 10px; height: 10px;
+        border-radius: 5px;
+
+        margin: 0 5px;
+        background-color: #FAFAFA;
+        -webkit-box-shadow: rgba(0, 0, 0, 0.7) 0px 0px 3px 0px, rgba(0, 0, 0, 0.2) 1px 1px 5px 0px inset;
+                box-shadow: rgba(0, 0, 0, 0.7) 0px 0px 3px 0px, rgba(0, 0, 0, 0.2) 1px 1px 5px 0px inset;
+
+        -webkit-animation: pulse 1.5s infinite;
+        -webkit-animation-timing-function: ease;
+      }
+
+      #splash.hidden .loader li {
+        -webkit-animation: none;
+      }
+
+      #splash-content {
+        position: absolute;
+        width: 100%; top: 20%;
+      }
+    </style>
+  </head>
+  <body>
+    
+    <!-- splash screen -->
+    <div id="splash">
+      <ol class="loader"><li></li><li></li><li></li></ol>
+      <h1 id="splash-content"/>Welcome to Serenity</h1>
+    </div>
+
+    <div id="application">
+      <div data-template-path="hello/hello"></div>
+    </div>
+
+    <!-- scripts and css -->
+    <link href="css/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
+
+    <script src="js/src/vendor/jquery.js"></script>
+    <script src="js/src/vendor/socket.js"></script>
+    <script src="js/src/vendor/livereload.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
